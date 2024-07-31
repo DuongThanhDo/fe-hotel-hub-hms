@@ -16,7 +16,6 @@ const adminRoutes = [
 const staffRoutes = [
     { path: configs.routes.home, component: Home },
     { path: configs.routes.booking, component: Booking },
-    { path: configs.routes.customer, component: Customer },
     { path: configs.routes.setting, component: Setting },
     { path: configs.routes.support, component: Support },
     { path: configs.routes.login, component: Login, layout: null },

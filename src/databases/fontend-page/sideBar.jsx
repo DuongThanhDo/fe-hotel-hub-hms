@@ -8,7 +8,12 @@ export const sideBar = [
     { title: 'Trang chủ', icon: <IoHomeOutline className="w-[20px] h-[20px]" />, to: configs.routes.home },
     { title: 'Đặt phòng', icon: <TbBrandBooking className="w-[20px] h-[20px]" />, to: configs.routes.booking },
     { title: 'Phòng', icon: <BiBed className="w-[20px] h-[20px]" />, to: configs.routes.room, role: 'admin' },
-    { title: 'Khách hàng', icon: <BiUserCircle className="w-[20px] h-[20px]" />, to: configs.routes.customer },
+    {
+        title: 'Khách hàng',
+        icon: <BiUserCircle className="w-[20px] h-[20px]" />,
+        to: configs.routes.customer,
+        role: 'admin',
+    },
     { title: 'Nhân sự', icon: <BiGroup className="w-[20px] h-[20px]" />, to: configs.routes.staff, role: 'admin' },
     {
         title: 'Thống kê',

@@ -3,7 +3,7 @@ import { Button, Input } from 'antd';
 
 const { Search } = Input;
 
-function PageHeader({ title, search, add, del }) {
+function PageHeader({ title, search, add, del, no = false, configs }) {
     return (
         <div className="w-full flex justify-between items-center mb-6">
             <p className="text-[24px] font-semibold ">
@@ -13,12 +13,17 @@ function PageHeader({ title, search, add, del }) {
                 <Search placeholder="Tìm kiếm..." onSearch={search} />
             </div>
             <div>
-                <Button className="mr-8" onClick={add}>
-                    Thêm
-                </Button>
-                <Button danger onClick={del}>
-                    Xóa
-                </Button>
+                {configs}
+                {!no && (
+                    <>
+                        <Button className="mr-8" onClick={add}>
+                            Thêm
+                        </Button>
+                        <Button danger onClick={del}>
+                            Xóa
+                        </Button>
+                    </>
+                )}
             </div>
         </div>
     );
