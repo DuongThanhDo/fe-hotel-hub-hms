@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import PageHeader from '../components/PageHeader';
 import { Table } from 'antd';
 import { LiaEditSolid } from 'react-icons/lia';
+import PageHeader from '../components/common/PageHeader';
 
 const initialData = [
     {

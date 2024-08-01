@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import PageHeader from '../components/PageHeader';
 import { Form, Input, InputNumber, Table } from 'antd';
 import { LiaEditSolid } from 'react-icons/lia';
 import ModalTable from '../components/common/ModalTable';
+import PageHeader from '../components/common/PageHeader';
 
 const initialData = [
     {

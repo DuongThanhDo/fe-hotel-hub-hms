@@ -22,5 +22,5 @@ export const sideBar = [
         role: 'admin',
     },
     { title: 'Hỗ trợ', icon: <BiHeadphone className="w-[20px] h-[20px]" />, to: configs.routes.support },
-    { title: 'Cài đặt', icon: <IoSettingsOutline className="w-[20px] h-[20px]" />, to: configs.routes.setting },
+    // { title: 'Cài đặt', icon: <IoSettingsOutline className="w-[20px] h-[20px]" />, to: configs.routes.setting },
 ];

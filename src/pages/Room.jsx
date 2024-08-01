@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import PageHeader from '../components/PageHeader';
 import { Form, Input, InputNumber, Table } from 'antd';
 import { LiaEditSolid } from 'react-icons/lia';
 import ModalTable from '../components/common/ModalTable';
+import PageHeader from '../components/common/PageHeader';
 
 const initialData = [
     { key: '1', room_number: 'A001', type: '1 giường đôi', price: 200000, status: 'trống' },

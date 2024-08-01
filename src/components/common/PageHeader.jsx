@@ -5,7 +5,7 @@ const { Search } = Input;
 
 function PageHeader({ title, search, add, del, no = false, configs }) {
     return (
-        <div className="w-full flex justify-between items-center mb-6">
+        <div className="w-full flex justify-between items-center mb-8">
             <p className="text-[24px] font-semibold ">
                 <i>{title}</i>
             </p>
