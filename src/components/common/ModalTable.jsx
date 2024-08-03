@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Modal } from 'antd';
 
-function ModalTable({ form, open, setOpen, handleSave, title, children, ...props }) {
+function ModalTable({ form, open, setOpen, handleSave, title, children, width, ...props }) {
     const handleCancel = () => setOpen(false);
 
     return (
@@ -13,8 +13,9 @@ function ModalTable({ form, open, setOpen, handleSave, title, children, ...props
                 onCancel={handleCancel}
                 okText="Xác nhận"
                 cancelText="Hủy"
+                width={width}
             >
-                <Form form={form} layout="vertical">
+                <Form form={form} layout="horizontal">
                     {children}
                 </Form>
             </Modal>
