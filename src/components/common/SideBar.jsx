@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 function SideBar() {
     const authState = useSelector((state) => state.auth);
     return (
-        <div className="w-[240px] h-[100vh]">
+        <div className="w-[240px] h-[100vh] pt-2">
             {sideBar.map((item, index) => {
                 if (item.role) {
                     if (item.role === authState.role) {

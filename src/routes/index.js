@@ -21,4 +21,8 @@ const staffRoutes = [
     { path: configs.routes.login, component: Login, layout: null },
 ];
 
-export { adminRoutes, staffRoutes };
+const publicRoutes = [
+    { path: configs.routes.login, component: Login, layout: null },
+];
+
+export { adminRoutes, staffRoutes, publicRoutes };

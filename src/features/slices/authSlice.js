@@ -3,15 +3,20 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     role: 'admin',
     userData: null,
-    isAuthenticated: false,
+    isAuthenticated: true,
 };
 
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        login(state, action) {
+        loginAdmin(state, action) {
             state.role = 'admin';
+            state.userData = action.payload;
+            state.isAuthenticated = true;
+        },
+        loginStaff(state, action) {
+            state.role = 'staff';
             state.userData = action.payload;
             state.isAuthenticated = true;
         },
@@ -23,6 +28,6 @@ const authSlice = createSlice({
     },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { loginAdmin, loginStaff, logout } = authSlice.actions;
 
 export default authSlice.reducer;

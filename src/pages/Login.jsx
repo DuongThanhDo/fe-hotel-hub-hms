@@ -4,9 +4,9 @@ import { assets } from '../assets';
 import { configs } from '../configs';
 import { FaFacebookF, FaGoogle } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-// import { useDispatch } from 'react-redux';
-// import authApi from '../features/apis/authApi';
-// import { loginUser } from '../features/slices/authSlice';
+import { useDispatch } from 'react-redux';
+import authApi from '../features/apis/authApi';
+import { loginAdmin, loginStaff } from '../features/slices/authSlice';
 
 function Login() {
     const [inputEmail, setInputEmail] = useState('');
@@ -14,16 +14,23 @@ function Login() {
 
     const navigate = useNavigate();
 
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
     const handleLogin = async () => {
-        // const reponse = await authApi.login(inputEmail, inputPassword);
-        // console.log(reponse);
-        // if (reponse) {
-        //     dispatch(loginUser(reponse));
-        //     alert('Đăng nhập thành công!');
-        //     navigate('/');
-        // }
+        try {
+            console.log(1);
+
+            const reponse = await authApi.login(inputEmail, inputPassword);
+            console.log(reponse);
+            if (reponse) {
+                if (reponse.role === 'admin') dispatch(loginAdmin(reponse));
+                else dispatch(loginStaff(reponse)); 
+                alert('Đăng nhập thành công!');
+                navigate('/');
+            }
+        } catch (error) {
+            alert('Sai email hoặc mật khẩu');
+        }
     };
 
     return (
