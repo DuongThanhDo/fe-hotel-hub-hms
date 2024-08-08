@@ -3,7 +3,7 @@ import ModalTable from '../common/ModalTable';
 import { Form, Input, Select } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 
-function BookingForm({ open, setOpen, action }) {
+function BookingForm({ open, form, setOpen, action }) {
     const hadleClickConfim = () => {
         setOpen(false);
     };
@@ -12,6 +12,7 @@ function BookingForm({ open, setOpen, action }) {
             <ModalTable
                 width={'800px'}
                 title={'Phiếu đặt phòng'}
+                form={form}
                 open={open}
                 setOpen={setOpen}
                 handleSave={hadleClickConfim}

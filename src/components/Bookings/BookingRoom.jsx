@@ -1,33 +1,29 @@
-import { Button } from 'antd';
-import React from 'react';
+import { message } from 'antd';
+import React, { useEffect } from 'react';
+import roomApi from '../../features/apis/roomApi';
+import { typeRooms } from '../../databases/fontend-page';
+import { useCallback } from 'react';
+import { BookingContext } from '../../pages/Booking';
+import { useContext } from 'react';
+import BookingForm from './BookingForm';
+import { useState } from 'react';
 
-const initialData = [
-    { key: '1', room_number: 'A001', type: '1 giường đôi', price: 200000, status: 'trống' },
-    { key: '2', room_number: 'A002', type: '2 giường đơn', price: 250000, status: 'đang thuê' },
-    { key: '3', room_number: 'A003', type: '1 giường đơn', price: 150000, status: 'trống' },
-    { key: '4', room_number: 'A004', type: '1 giường đôi', price: 200000, status: 'đang dọn' },
-    { key: '5', room_number: 'A005', type: '1 giường đôi', price: 200000, status: 'trống' },
-    { key: '6', room_number: 'A006', type: '1 giường đôi', price: 200000, status: 'trống' },
-    { key: '7', room_number: 'A007', type: '2 giường đơn', price: 250000, status: 'đang thuê' },
-    { key: '8', room_number: 'A008', type: '1 giường đơn', price: 150000, status: 'trống' },
-    { key: '9', room_number: 'A009', type: '1 giường đôi', price: 200000, status: 'đang dọn' },
-    { key: '10', room_number: 'A010', type: '1 giường đôi', price: 200000, status: 'trống' },
-    { key: '11', room_number: 'A011', type: '1 giường đôi', price: 200000, status: 'trống' },
-    { key: '12', room_number: 'A012', type: '2 giường đơn', price: 250000, status: 'đang thuê' },
-    { key: '13', room_number: 'A013', type: '1 giường đơn', price: 150000, status: 'trống' },
-    { key: '14', room_number: 'A014', type: '1 giường đôi', price: 200000, status: 'đang dọn' },
-    { key: '15', room_number: 'A015', type: '1 giường đôi', price: 200000, status: 'trống' },
-    { key: '16', room_number: 'A016', type: '1 giường đơn', price: 150000, status: 'trống' },
-    { key: '17', room_number: 'A017', type: '1 giường đôi', price: 200000, status: 'đang dọn' },
-    { key: '18', room_number: 'A018', type: '1 giường đôi', price: 200000, status: 'trống' },
-    { key: '19', room_number: 'A019', type: '1 giường đôi', price: 200000, status: 'trống' },
-    { key: '20', room_number: 'A020', type: '2 giường đơn', price: 250000, status: 'đang thuê' },
-    { key: '21', room_number: 'A021', type: '1 giường đơn', price: 150000, status: 'trống' },
-    { key: '22', room_number: 'A022', type: '1 giường đôi', price: 200000, status: 'đang dọn' },
-    { key: '23', room_number: 'A023', type: '1 giường đôi', price: 200000, status: 'trống' },
-];
+function BookingRoom() {
+    const booking = useContext(BookingContext);
+    
+    const [openModal, setOpenModal] = useState(false);
 
-function BookingRoom({ setDatas, setColumns }) {
+    const fetchRooms = useCallback(async () => {
+        try {
+            const response = await roomApi.getRoom();
+            booking.setDataTable(response.map((room) => ({ ...room, key: room.room_id })));
+            booking.setColumnTable(columns);
+        } catch (error) {
+            message.error('Lỗi khi lấy dữ liệu phòng');
+            console.log(error);
+        }
+    }, []);
+
     const columns = [
         { title: 'Số phòng', dataIndex: 'room_number', key: 'room_number' },
         { title: 'Loại phòng', dataIndex: 'type', key: 'type' },
@@ -36,18 +32,61 @@ function BookingRoom({ setDatas, setColumns }) {
         {
             title: '#',
             key: 'action',
-            render: (_, record) => <p>#</p>,
+            render: (_, record) => <p onClick={() => setOpenModal(true)}>#</p>,
         },
     ];
 
-    const handleClickAll = () => {
-        setDatas(initialData);
-        setColumns(columns);
+    useEffect(() => {
+        fetchRooms();
+    }, [fetchRooms]);
+
+    useEffect(() => {
+    }, []);
+
+    const getRoomByStatus = (dataRoom, status) => {
+        booking.setDataTable(dataRoom.filter((room) => room.status === status));
+    };
+
+    const getRoomByType = (dataRoom, type) => {
+        booking.setDataTable(dataRoom.filter((room) => room.type === type));
+    };
+
+    booking.onClickRoom = async (e) => {
+        try {
+            let key = 1;
+            let check = false;
+            const response = await roomApi.getRoom();
+
+            if (Number(e.key) === key++) {
+                booking.setDataTable(response.map((room) => ({ ...room, key: room.room_id })));
+                check = true;
+            }
+
+            if (!check) {
+                ['có sẵn', 'đã đặt', 'bảo trì'].forEach((item) => {
+                    if (Number(e.key) === key++) {
+                        getRoomByStatus(response, item);
+                        check = true;
+                    }
+                });
+            }
+
+            if (!check) {
+                typeRooms.forEach((type) => {
+                    if (Number(e.key) === key++) getRoomByType(response, type);
+                });
+            }
+
+            booking.setColumnTable(columns);
+        } catch (error) {
+            message.error('Lỗi khi lấy dữ liệu phòng');
+            console.log(error);
+        }
     };
 
     return (
-        <div className='w-full'>
-            <Button className='w-full' onClick={handleClickAll}>Phòng</Button>
+        <div className="w-full">
+            <BookingForm open={openModal} setOpen={setOpenModal} />
         </div>
     );
 }

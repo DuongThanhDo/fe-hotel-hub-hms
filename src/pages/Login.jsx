@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Checkbox, Input } from 'antd';
+import { Button, Checkbox, Input, message } from 'antd';
 import { assets } from '../assets';
 import { configs } from '../configs';
 import { FaFacebookF, FaGoogle } from 'react-icons/fa';
@@ -24,12 +24,12 @@ function Login() {
             console.log(reponse);
             if (reponse) {
                 if (reponse.role === 'admin') dispatch(loginAdmin(reponse));
-                else dispatch(loginStaff(reponse)); 
-                alert('Đăng nhập thành công!');
+                else dispatch(loginStaff(reponse));
+                message.success('Đăng nhập thành công');
                 navigate('/');
             }
         } catch (error) {
-            alert('Sai email hoặc mật khẩu');
+            message.error('Sai email hoặc mật khẩu');
         }
     };
 

@@ -1,38 +1,41 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 
 import { TbEyeEdit, TbEyeExclamation, TbEyePlus } from 'react-icons/tb';
-import { Button } from 'antd';
 import BookingForm from './BookingForm';
+import { BookingContext } from '../../pages/Booking';
+import { useContext } from 'react';
 
 const initialData = [
-    { key: '1', name: 'A001', email: '123', phone: '1', status: 'pending' },
-    { key: '2', name: 'A001', email: '123', phone: '1', status: 'pending' },
-    { key: '3', name: 'A001', email: '123', phone: '1', status: 'confirmed' },
-    { key: '4', name: 'A001', email: '123', phone: '1', status: 'confirmed' },
-    { key: '5', name: 'A001', email: '123', phone: '1', status: 'confirmed' },
-    { key: '6', name: 'A001', email: '123', phone: '1', status: 'confirmed' },
-    { key: '7', name: 'A001', email: '123', phone: '1', status: 'ruined' },
-    { key: '8', name: 'A001', email: '123', phone: '1', status: 'confirmed' },
+    { key: '1', name: 'A001', email: '123', phone: '1', status: 'đang chờ' },
+    { key: '2', name: 'A001', email: '123', phone: '1', status: 'đang chờ' },
+    { key: '3', name: 'A001', email: '123', phone: '1', status: 'đang thuê' },
+    { key: '4', name: 'A001', email: '123', phone: '1', status: 'đang thuê' },
+    { key: '5', name: 'A001', email: '123', phone: '1', status: 'đang thuê' },
+    { key: '6', name: 'A001', email: '123', phone: '1', status: 'đang thuê' },
+    { key: '7', name: 'A001', email: '123', phone: '1', status: 'đã hủy' },
+    { key: '8', name: 'A001', email: '123', phone: '1', status: 'đang thuê' },
 ];
 
-function BookingCustomer({ setDatas, setColumns }) {
+function BookingCustomer() {
+    const booking = useContext(BookingContext);
+
     const [openModal, setOpenModal] = useState(false);
     const [action, setAction] = useState('');
 
     const handleClickPending = () => {
-        setOpenModal(true)
-        setAction('pending')
-    }
+        setOpenModal(true);
+        setAction('đang chờ');
+    };
 
     const handleClickConfirmed = () => {
-        setOpenModal(true)
-        setAction('confirmed')
-    }
+        setOpenModal(true);
+        setAction('đang thuê');
+    };
 
     const handleClickRuined = () => {
-        setOpenModal(true)
-        setAction('ruined')
-    }
+        setOpenModal(true);
+        setAction('đã hủy');
+    };
 
     const columns = [
         { title: 'Tên', dataIndex: 'name', key: 'name' },
@@ -43,12 +46,12 @@ function BookingCustomer({ setDatas, setColumns }) {
             key: 'status',
             render: (_, record) => (
                 <p>
-                    {record.status === 'pending' ? (
+                    {record.status === 'đang chờ' ? (
                         <p className="text-yellow-400 font-medium">đang chờ</p>
-                    ) : record.status === 'confirmed' ? (
-                        <p className="text-green-400 font-medium">Đang thuê</p>
+                    ) : record.status === 'đang thuê' ? (
+                        <p className="text-green-400 font-medium">đang thuê</p>
                     ) : (
-                        <p className="text-red-400 font-medium">Đã hủy</p>
+                        <p className="text-red-400 font-medium">đã hủy</p>
                     )}
                 </p>
             ),
@@ -58,9 +61,9 @@ function BookingCustomer({ setDatas, setColumns }) {
             key: 'action',
             render: (_, record) => (
                 <p className="text-[20px]">
-                    {record.status === 'pending' ? (
+                    {record.status === 'đang chờ' ? (
                         <TbEyePlus onClick={handleClickPending} className="cursor-pointer" />
-                    ) : record.status === 'confirmed' ? (
+                    ) : record.status === 'đang thuê' ? (
                         <TbEyeEdit onClick={handleClickConfirmed} className="cursor-pointer" />
                     ) : (
                         <TbEyeExclamation onClick={handleClickRuined} className="cursor-pointer" />
@@ -70,22 +73,27 @@ function BookingCustomer({ setDatas, setColumns }) {
         },
     ];
 
-    useEffect(() => {
-        setDatas(initialData);
-        setColumns(columns);
-    }, []);
+    const getRoomByStatus = (data, status) => {
+        booking.setDataTable(data.filter((item) => item.status === status));
+    };
 
-    const handleClickAll = () => {
-        setDatas(initialData);
-        setColumns(columns);
+    booking.onClickCus = (e) => {
+        let key = 100;
+
+        if (Number(e.key) === key++) {
+            booking.setDataTable(initialData);
+        } else {
+            ['đang chờ', 'đang thuê', 'đã hủy'].forEach((item) => {
+                if (Number(e.key) === key++) getRoomByStatus(initialData, item);
+            });
+        }
+
+        booking.setColumnTable(columns);
     };
 
     return (
         <div className="w-full">
             <BookingForm action={action} open={openModal} setOpen={setOpenModal} />
-            <Button className="w-full" onClick={handleClickAll}>
-                Khách hàng
-            </Button>
         </div>
     );
 }
